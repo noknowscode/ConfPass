@@ -1,4 +1,5 @@
 <UserControl x:Class="ConfPass.Controls.NeumorphicIconButton"
+             x:Name="RootControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:utu="using:Uno.Toolkit.UI">
@@ -28,7 +29,7 @@
                   Width="44" Height="44"
                   CornerRadius="{StaticResource RadiusSm}">
                 <ContentPresenter x:Name="RaisedContentPresenter"
-                                  Content="{x:Bind IconContent, Mode=OneWay}"
+                                  Content="{Binding IconContent, ElementName=RootControl}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center" />
             </Grid>
@@ -43,7 +44,7 @@
                   Margin="6"
                   CornerRadius="{StaticResource RadiusSm}">
                 <ContentPresenter x:Name="InsetContentPresenter"
-                                  Content="{x:Bind IconContent, Mode=OneWay}"
+                                  Content="{Binding IconContent, ElementName=RootControl}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center" />
             </Grid>

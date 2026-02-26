@@ -19,24 +19,42 @@ public partial class App : Application
         var appBuilder = this.CreateBuilder(args)
             .Configure(host =>
             {
-                host.ConfigureServices((context, services) =>
+                host
+#if DEBUG
+                .UseEnvironment(Environments.Development)
+#endif
+                .UseLogging(configure: (context, logBuilder) =>
+                {
+                    logBuilder
+                        .SetMinimumLevel(
+                            context.HostingEnvironment.IsDevelopment() ?
+                                LogLevel.Information :
+                                LogLevel.Warning)
+                        .CoreLogLevel(LogLevel.Warning);
+                }, enableUnoLogging: true)
+                .UseConfiguration(configure: configBuilder =>
+                    configBuilder
+                        .EmbeddedSource<App>()
+                )
+                .UseLocalization()
+                .ConfigureServices((context, services) =>
                 {
                     services.AddTransient<MainViewModel>();
                 });
             });
 
         Host = appBuilder.Build();
-        MainWindow = new Window();
+        MainWindow = appBuilder.Window;
 
 #if DEBUG
         MainWindow.UseStudio();
 #endif
+        MainWindow.SetWindowIcon();
 
         if (MainWindow.Content is not Frame rootFrame)
         {
             rootFrame = new Frame();
             MainWindow.Content = rootFrame;
-            rootFrame.NavigationFailed += OnNavigationFailed;
         }
 
         if (rootFrame.Content == null)
@@ -44,12 +62,6 @@ public partial class App : Application
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
 
-        MainWindow.SetWindowIcon();
         MainWindow.Activate();
-    }
-
-    void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-    {
-        throw new System.InvalidOperationException($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
     }
 }

@@ -37,6 +37,13 @@
       Toolkit;
       Mvvm;
       Hosting;
+      Logging;
+      Navigation;
+      Configuration;
+      Localization;
+      Dsp;
+      ThemeService;
+      Serialization;
       SkiaRenderer;
     </UnoFeatures>
   </PropertyGroup>
